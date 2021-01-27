@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  * Recipe instance can be created using either {@link Recipe#Recipe} or {@link Recipe#getRecipe}
  * Context instance can be created using {@link Recipe#getContext}
  *
- * @author Sarah & Mike
+ * @author Sarah and Mike
  */
 public class Recipe implements Serializable {
     private String name;
