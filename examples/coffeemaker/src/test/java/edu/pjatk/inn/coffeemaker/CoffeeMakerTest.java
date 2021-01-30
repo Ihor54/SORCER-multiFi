@@ -15,7 +15,6 @@ import sorcer.service.Routine;
 
 import static org.junit.Assert.*;
 import static sorcer.eo.operator.*;
-import static sorcer.so.operator.eval;
 import static sorcer.so.operator.exec;
 
 /**
@@ -151,5 +150,57 @@ public class CoffeeMakerTest {
 		coffeeMaker.editRecipe(espresso,mocha);
 		assertEquals(mocha, coffeeMaker.getRecipes()[0]);
 	}
+	@Test
+	public void makeCoffeeNotEnoughMoney(){
+		int amtPaid = 49;
+		assertEquals(amtPaid, coffeeMaker.makeCoffee(espresso, amtPaid));
+	}
+
+	@Test
+	public void makeCoffeeNotEnoughIngredients(){
+		int amtCoffee = 1;
+		int amtMilk = 1;
+		int amtSugar = 1;
+		int amtChocolate = 1;
+		inventory.setCoffee(amtCoffee);
+		inventory.setCoffee(amtMilk);
+		inventory.setCoffee(amtSugar);
+		inventory.setCoffee(amtChocolate);
+
+		int amtPaid = 50;
+		assertEquals(amtPaid, coffeeMaker.makeCoffee(espresso, amtPaid));
+	}
+
+	@Test
+	public void makeCoffeeInventoryCheck(){
+		int amtPaid = 50;
+		coffeeMaker.makeCoffee(espresso, amtPaid);
+		assertEquals(9, inventory.getCoffee());
+		assertEquals(14, inventory.getMilk());
+		assertEquals(14, inventory.getSugar());
+		assertEquals(15, inventory.getChocolate());
+	}
+
+
+	@Test
+	public void addInventory(){
+		int amtCoffee = 5;
+		int amtMilk = 2;
+		int amtSugar = 3;
+		int amtChocolate = 1;
+
+		int coffeeBefore = inventory.getCoffee();
+		int milkBefore = inventory.getMilk();
+		int sugarBefore = inventory.getSugar();
+		int chocolateBefore = inventory.getChocolate();
+
+		assertTrue(coffeeMaker.addInventory(amtCoffee, amtMilk, amtSugar, amtChocolate));
+
+		assertEquals(coffeeBefore + amtCoffee, inventory.getCoffee());
+		assertEquals(milkBefore + amtMilk, inventory.getMilk());
+		assertEquals(sugarBefore + amtSugar, inventory.getSugar());
+		assertEquals(chocolateBefore + amtChocolate, inventory.getChocolate());
+	}
+
 }
 
