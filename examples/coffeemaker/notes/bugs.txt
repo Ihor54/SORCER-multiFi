@@ -1,64 +1,36 @@
 // BUGS
-1- Add a Recipe:
-	problem :
-	method : addRecipe
-	line code : 51
-	description of bug : number of recipies should be upto 3 according to the user requirements
-    	
-	solution :
-	line code 25 --> private final int NUM_RECIPES = 3;
+1-  field : CoffeeMaker.NUM_RECIPES
+    line code : 25
+    description of bug : number of recipes should be not more than 3 according to the User Story Add a Recipe
+    solution : value in of the field NUM_RECIPES should be changed to 3 -> private final int NUM_RECIPES = 3;
 
-2-Delete a Recipe:
-	problem :
-	method : deleteRecipe
-	line code : 87
-	description of bug : we are not deleting a recipe here.
-	line code : 92 --> recipeArray[i] = recipeArray[i];
+2 - method : CoffeeMaker.addRecipe
+    line code : 64-69
+    description of bug: recipe is added to the last empty spot, not the first one because the loop continues to work after finding the first empty spot
+    solution : add "break;" on the new line after line 67;
 
-    	solution :
-	line code 92: (recipeArray[i] = new Recipe();
+3 -	method : CoffeeMaker.deleteRecipe
+	line code : 92
+	description of bug : recipe is not deleted from the array recipeArray and spot stayed full in the array recipeFull
+    solution :  instead of line 92 2 following lines should be inserted:
+                recipeArray[i] = new Recipe();
+                recipeFull[i] = false;
 
-3- Edit a Recipe
-	problem:
-	method : editRecipe
-	line code : 125-133
-	description of bug : edit recipe here we are not editing an existing recipe we are adding a new one we need to reassign it ():
-                if(newRecipe.equals(recipeArray[i])) {
-                    recipeArray[i] = new Recipe();
-                    if(addRecipe(newRecipe)) {
-                        canEditRecipe = true;
-                    } else {
-                        //Unreachable line of code
-                        canEditRecipe = false;
-                    }
-                }
-
- 
-	answer:
-    	the correct code :
-            if(recipeArray[i].getName() != null) {
-                if(oldRecipe.equals(recipeArray[i])) {
+4 -	method : CoffeeMaker.editRecipe
+	line code : 125-132
+	description of bug : the name of the newRecipe is checked instead of oldRecipe and newRecipe should not be added to the new spot, it should just replace the old one.
+	solution: code in lines 125-132 should be replaced by the following code ->
+	            if(oldRecipe.equals(recipeArray[i])) {
                     recipeArray[i] = newRecipe;
-                    if(addRecipe(newRecipe)) {
-                        canEditRecipe = true;
-                    } else {
-                        //Unreachable line of code
-                        canEditRecipe = false;
-                    }
+                    canEditRecipe = true;
                 }
 
- 
-4- Add Inventory
-	problem :
-	method : addInventory
-	line code : 147
-	description of bug : for add to Inventory we have the if condition for amount of sugar (amtSugar > 0) which is incorrect according to the use case
-    	solution : (amtSugar < 0)
-5- Purchase Beverage
-	problem :
-	method :makeCoffee
-	line code : 176
-	description of bug : in make coffee we must subtract coffee from the existing amount in the inventory but we have ( inventory.getCoffee() + r.getAmtCoffee() )
-    	solution :
+5 -	method : CoffeeMaker.addInventory
+	line code : 149
+	description of bug : in the if statement one of the conditions checks amount of sugar to be positive instead of negative
+    solution : if statement in line 149 should be replaced with the following if statement -> if(amtCoffee < 0 || amtMilk < 0 || amtSugar < 0 || amtChocolate < 0)
+
+6 -	method : CoffeeMaker.makeCoffee
 	line code : 185
- 	inventory.getCoffee() - r.getAmtCoffee()
+	description of bug : in make coffee we must subtract coffee from the existing amount in the inventory but instead coffee is added
+    solution : code in line 185 should be replaced with the following code -> inventory.setCoffee(inventory.getCoffee() - r.getAmtCoffee());
