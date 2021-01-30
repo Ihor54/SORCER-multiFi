@@ -1,0 +1,64 @@
+// BUGS
+1- Add a Recipe:
+	problem :
+	method : addRecipe
+	line code : 51
+	description of bug : number of recipies should be upto 3 according to the user requirements
+    	
+	solution :
+	line code 25 --> private final int NUM_RECIPES = 3;
+
+2-Delete a Recipe:
+	problem :
+	method : deleteRecipe
+	line code : 87
+	description of bug : we are not deleting a recipe here.
+	line code : 92 --> recipeArray[i] = recipeArray[i];
+
+    	solution :
+	line code 92: (recipeArray[i] = new Recipe();
+
+3- Edit a Recipe
+	problem:
+	method : editRecipe
+	line code : 125-133
+	description of bug : edit recipe here we are not editing an existing recipe we are adding a new one we need to reassign it ():
+                if(newRecipe.equals(recipeArray[i])) {
+                    recipeArray[i] = new Recipe();
+                    if(addRecipe(newRecipe)) {
+                        canEditRecipe = true;
+                    } else {
+                        //Unreachable line of code
+                        canEditRecipe = false;
+                    }
+                }
+
+ 
+	answer:
+    	the correct code :
+            if(recipeArray[i].getName() != null) {
+                if(oldRecipe.equals(recipeArray[i])) {
+                    recipeArray[i] = newRecipe;
+                    if(addRecipe(newRecipe)) {
+                        canEditRecipe = true;
+                    } else {
+                        //Unreachable line of code
+                        canEditRecipe = false;
+                    }
+                }
+
+ 
+4- Add Inventory
+	problem :
+	method : addInventory
+	line code : 147
+	description of bug : for add to Inventory we have the if condition for amount of sugar (amtSugar > 0) which is incorrect according to the use case
+    	solution : (amtSugar < 0)
+5- Purchase Beverage
+	problem :
+	method :makeCoffee
+	line code : 176
+	description of bug : in make coffee we must subtract coffee from the existing amount in the inventory but we have ( inventory.getCoffee() + r.getAmtCoffee() )
+    	solution :
+	line code : 185
+ 	inventory.getCoffee() - r.getAmtCoffee()
