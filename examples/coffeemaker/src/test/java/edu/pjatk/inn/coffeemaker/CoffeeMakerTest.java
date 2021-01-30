@@ -13,8 +13,7 @@ import org.sorcer.test.SorcerTestRunner;
 import sorcer.service.ContextException;
 import sorcer.service.Routine;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static sorcer.eo.operator.*;
 import static sorcer.so.operator.eval;
 import static sorcer.so.operator.exec;
@@ -123,5 +122,34 @@ public class CoffeeMakerTest {
 		assertEquals(coffeeMaker.makeCoffee(espresso, 200), 150);
 	}
 
+	@Test
+	public void addRecipe_MoreThan3Added(){
+		assertTrue(coffeeMaker.addRecipe(espresso));
+		assertTrue(coffeeMaker.addRecipe(mocha));
+		assertTrue(coffeeMaker.addRecipe(macchiato));
+		assertFalse(coffeeMaker.addRecipe(americano));
+	}
+
+	@Test
+	public void addRecipe_FirstSpotChosen(){
+		coffeeMaker.addRecipe(espresso);
+		assertEquals(espresso, coffeeMaker.getRecipes()[0]);
+		assertTrue(coffeeMaker.getRecipeFull()[0]);
+	}
+
+	@Test
+	public void deleteRecipeTest_Deleted(){
+		coffeeMaker.addRecipe(espresso);
+		coffeeMaker.deleteRecipe(espresso);
+		assertEquals("", coffeeMaker.getRecipes()[0].getName());
+		assertFalse(coffeeMaker.getRecipeFull()[0]);
+	}
+
+	@Test
+	public void editRecipeTest_recipeEdited(){
+		coffeeMaker.addRecipe(espresso);
+		coffeeMaker.editRecipe(espresso,mocha);
+		assertEquals(mocha, coffeeMaker.getRecipes()[0]);
+	}
 }
 
